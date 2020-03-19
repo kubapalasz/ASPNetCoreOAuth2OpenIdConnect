@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.API", "src\Ima
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageGallery.Model", "src\ImageGallery.Model\ImageGallery.Model.csproj", "{226B95C9-A9A6-4DF7-992C-A5945AF3AF0F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDP", "src\IDP\IDP.csproj", "{BE7AC665-9257-4DD3-980D-B36168AF1110}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{226B95C9-A9A6-4DF7-992C-A5945AF3AF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{226B95C9-A9A6-4DF7-992C-A5945AF3AF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{226B95C9-A9A6-4DF7-992C-A5945AF3AF0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE7AC665-9257-4DD3-980D-B36168AF1110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE7AC665-9257-4DD3-980D-B36168AF1110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE7AC665-9257-4DD3-980D-B36168AF1110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE7AC665-9257-4DD3-980D-B36168AF1110}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
