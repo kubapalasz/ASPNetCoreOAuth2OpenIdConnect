@@ -46,6 +46,7 @@ namespace ImageGallery.Client
                         options.ClientId = "imagegalleryclient"; // Client id  should match one defined in IDP
                         options.ResponseType = "code"; // Grant - code flow
                         //options.UsePkce = false;
+                        //options.SignedOutCallbackPath - change just when it's not default.
                         options.Scope.Add("openid");
                         options.Scope.Add("profile");
                         options.SaveTokens = true;
