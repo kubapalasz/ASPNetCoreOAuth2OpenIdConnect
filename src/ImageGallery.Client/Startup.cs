@@ -45,7 +45,7 @@ namespace ImageGallery.Client
                         options.Authority = "https://localhost:44317/"; // IDP address
                         options.ClientId = "imagegalleryclient"; // Client id  should match one defined in IDP
                         options.ResponseType = "code"; // Grant - code flow
-                        options.UsePkce = false;
+                        //options.UsePkce = false;
                         options.Scope.Add("openid");
                         options.Scope.Add("profile");
                         options.SaveTokens = true;
