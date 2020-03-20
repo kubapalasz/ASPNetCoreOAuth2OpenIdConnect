@@ -12,9 +12,10 @@ namespace IDP
     {
         public static IEnumerable<IdentityResource> Ids =>
             new IdentityResource[]
-            { 
+            {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile() 
+                new IdentityResources.Profile(),
+                new IdentityResources.Address()
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -41,7 +42,8 @@ namespace IDP
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Address
                     },
                     ClientSecrets = new List<Secret>
                     {

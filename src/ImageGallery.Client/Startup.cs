@@ -52,14 +52,14 @@ namespace ImageGallery.Client
                         options.ResponseType = "code"; // Grant - code flow
                         //options.UsePkce = false;
                         //options.SignedOutCallbackPath - change just when it's not default.
-                        options.Scope.Add("openid");
-                        options.Scope.Add("profile");
+                        //options.Scope.Add("openid"); // < could be added but openid is added by default by OpenIdConnectOptions in Github
+                        //options.Scope.Add("profile"); // < could be added but profile is added by default by OpenIdConnect
+                        options.Scope.Add("address");
                         options.SaveTokens = true;
                         
                         //options.ClaimActions.Remove("nbf"); ///<-- removes filter not-before, this claim now will show up.
                         options.ClaimActions.DeleteClaim("sid"); /// <-- removes claim, will NOT show up.
                         options.ClaimActions.DeleteClaim("idp");
-
 
                         options.ClientSecret = "secret";
                         options.GetClaimsFromUserInfoEndpoint = true;
