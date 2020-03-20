@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -200,6 +201,35 @@ namespace ImageGallery.Client.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        }
+
+        public async Task<IActionResult> OrderFrame()
+        {
+            var idpClient = _httpClientFactory.CreateClient("IDPClient");
+
+            var metaDataResponse = await idpClient.GetDiscoveryDocumentAsync();
+
+            if (metaDataResponse.IsError)
+            {
+                throw new Exception("Failed to get medata data from IDP", metaDataResponse.Exception);
+            }
+
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
+
+            var userInforReponse = await idpClient.GetUserInfoAsync(new UserInfoRequest
+            {
+                Address = metaDataResponse.UserInfoEndpoint,
+                Token = accessToken
+            });
+
+            if (userInforReponse.IsError)
+            {
+                throw new Exception("Failed to get user info from IDP", userInforReponse.Exception);
+            }
+
+            var address = userInforReponse.Claims.FirstOrDefault(c => c.Type == "address")?.Value;
+
+            return View(new OrderFrameViewModel(address));
         }
     }
 }
