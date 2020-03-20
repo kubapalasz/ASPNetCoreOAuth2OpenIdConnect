@@ -6,9 +6,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ImageGallery.Client
 {
@@ -73,6 +75,13 @@ namespace ImageGallery.Client
 
                         options.ClientSecret = "secret";
                         options.GetClaimsFromUserInfoEndpoint = true;
+
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            NameClaimType = JwtClaimTypes.GivenName,
+                            RoleClaimType = JwtClaimTypes.Role
+                        };
+
                     });
 
         }
