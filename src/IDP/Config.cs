@@ -15,7 +15,14 @@ namespace IDP
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Address()
+                new IdentityResources.Address(),
+                new IdentityResource(
+                    "roles",
+                    "Your role(s)",
+                    new List<string>
+                    {
+                        "role" // List of Claims which needs to be returned when application asks for this scope.
+                    })
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -43,7 +50,8 @@ namespace IDP
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Address
+                        IdentityServerConstants.StandardScopes.Address,
+                        "roles" // allowed scope
                     },
                     ClientSecrets = new List<Secret>
                     {

@@ -62,7 +62,10 @@ namespace ImageGallery.Client
                         //options.Scope.Add("openid"); // < could be added but openid is added by default by OpenIdConnectOptions in Github
                         //options.Scope.Add("profile"); // < could be added but profile is added by default by OpenIdConnect
                         options.Scope.Add("address");
+                        options.Scope.Add("roles");
                         options.SaveTokens = true;
+
+                        options.ClaimActions.MapUniqueJsonKey("role", "role");
                         
                         //options.ClaimActions.Remove("nbf"); ///<-- removes filter not-before, this claim now will show up.
                         options.ClaimActions.DeleteClaim("sid"); /// <-- removes claim, will NOT show up.
