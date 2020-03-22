@@ -7,6 +7,7 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using IdentityModel;
+using ImageGallery.Client.HttpHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -32,13 +33,19 @@ namespace ImageGallery.Client
             services.AddControllersWithViews()
                  .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
+            services.AddHttpContextAccessor();
+
+            services.AddTransient<BearerTokenHandler>();
+
             // create an HttpClient used for accessing the API
-            services.AddHttpClient("APIClient", client =>
-            {
-                client.BaseAddress = new Uri("https://localhost:44366/");
-                client.DefaultRequestHeaders.Clear();
-                client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
-            });
+            services
+                .AddHttpClient("APIClient", client =>
+                {
+                    client.BaseAddress = new Uri("https://localhost:44366/");
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/json");
+                })
+                .AddHttpMessageHandler<BearerTokenHandler>();
 
             services.AddHttpClient("IDPClient", client =>
             {
@@ -68,6 +75,7 @@ namespace ImageGallery.Client
                         //options.Scope.Add("profile"); // < could be added but profile is added by default by OpenIdConnect
                         options.Scope.Add("address");
                         options.Scope.Add("roles");
+                        options.Scope.Add("imagegalleryapi");
                         options.SaveTokens = true;
 
                         options.ClaimActions.MapUniqueJsonKey("role", "role");

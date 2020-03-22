@@ -26,8 +26,10 @@ namespace IDP
             };
 
         public static IEnumerable<ApiResource> Apis =>
-            new ApiResource[] 
-            { };
+            new ApiResource[]
+            {
+                new ApiResource("imagegalleryapi", "Image Gallery API"), 
+            };
 
         public static IEnumerable<Client> Clients =>
             new[]
@@ -51,7 +53,8 @@ namespace IDP
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
-                        "roles" // allowed scope
+                        "roles", // allowed scope
+                        "imagegalleryapi"
                     },
                     ClientSecrets = new List<Secret>
                     {
