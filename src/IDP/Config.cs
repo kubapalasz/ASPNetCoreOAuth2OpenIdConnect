@@ -22,7 +22,9 @@ namespace IDP
                     new List<string>
                     {
                         "role" // List of Claims which needs to be returned when application asks for this scope.
-                    })
+                    }),
+                new IdentityResource("country", "The country you are living in", new List<string>{"country"}), 
+                new IdentityResource("subscriptionlevel", "Your subscription level", new List<string>{"subscriptionlevel"}), 
             };
 
         public static IEnumerable<ApiResource> Apis =>
@@ -56,7 +58,9 @@ namespace IDP
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Address,
                         "roles", // allowed scope
-                        "imagegalleryapi"
+                        "imagegalleryapi",
+                        "country",
+                        "subscriptionlevel"
                     },
                     ClientSecrets = new List<Secret>
                     {

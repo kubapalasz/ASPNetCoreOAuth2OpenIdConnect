@@ -20,6 +20,8 @@ namespace IDP
                     new Claim(JwtClaimTypes.FamilyName, "Underwood"),
                     new Claim(JwtClaimTypes.Address, "Main Road 1"),
                     new Claim(JwtClaimTypes.Role, "FreeUser"),
+                    new Claim("country", "nl"),
+                    new Claim("sobscriptionlevel", "FreeUser"),
                 }
             },
             new TestUser{SubjectId = "b7539694-97e7-4dfe-84da-b4256e1ff5c7", Username = "Claire", Password = "password", 
@@ -29,6 +31,8 @@ namespace IDP
                     new Claim(JwtClaimTypes.FamilyName, "Underwood"),
                     new Claim(JwtClaimTypes.Address, "Big Street 2"),
                     new Claim(JwtClaimTypes.Role, "PayingUser"),
+                    new Claim("country", "be"),
+                    new Claim("sobscriptionlevel", "PayingUser"),
                 }
             }
         };

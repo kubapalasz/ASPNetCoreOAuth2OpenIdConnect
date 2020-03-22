@@ -214,7 +214,7 @@ namespace ImageGallery.Client.Controllers
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
         }
 
-        [Authorize(Roles = "PayingUser")]
+        [Authorize(Policy = "CanOrderFrame")]
         public async Task<IActionResult> OrderFrame()
         {
             var idpClient = _httpClientFactory.CreateClient("IDPClient");

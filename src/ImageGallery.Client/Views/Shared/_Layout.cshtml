@@ -32,20 +32,25 @@
                 <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Image Gallery</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Gallery" asp-action="Index">Home</a></li>                    
-	                  
-                    @if (User.IsInRole("PayingUser"))
-                    {
-	                    <li><a asp-area="" asp-controller="Gallery" asp-action="AddImage">Add an image</a></li>
-	                    <li><a asp-area="" asp-controller="Gallery" asp-action="OrderFrame">Order frame</a></li> 
-                    }
+				<ul class="nav navbar-nav">
+					<li><a asp-area="" asp-controller="Gallery" asp-action="Index">Home</a></li>
 
-	                @if (User.Identity.IsAuthenticated)
-                    {
-	                    <li><a asp-area="" asp-controller="Gallery" asp-action="Logout">Logout</a></li>
-                    }
-                </ul>
+					@if (User.IsInRole("PayingUser"))
+					{
+						<li><a asp-area="" asp-controller="Gallery" asp-action="AddImage">Add an image</a></li>
+
+					}
+
+					@if ((await AuthorizationService.AuthorizeAsync(User, "CanOrderFrame")).Succeeded)
+					{
+						<li><a asp-area="" asp-controller="Gallery" asp-action="OrderFrame">Order frame</a></li>
+					}
+
+					@if (User.Identity.IsAuthenticated)
+					{
+						<li><a asp-area="" asp-controller="Gallery" asp-action="Logout">Logout</a></li>
+					}
+				</ul>
             </div>
         </div>
     </div>
