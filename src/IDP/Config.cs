@@ -40,6 +40,14 @@ namespace IDP
             {
                 new Client
                 {
+                    // IdentityTokenLifetime = by default 5 mins in [sec]
+                    //AuthorizationCodeLifetime = by default 5 mins in [sec]
+                    AccessTokenLifetime =  120, //by default 1 h in [sec]
+                    AllowOfflineAccess = true,
+                    //RefreshTokenExpiration = TokenExpiration.Sliding,
+                    // SlidingRefreshTokenLifetime = 
+                    // AbsoluteRefreshTokenLifetime = 
+                    UpdateAccessTokenClaimsOnRefresh = true,
                     ClientName = "Image Gallery",
                     ClientId = "imagegalleryclient",
                     AllowedGrantTypes = GrantTypes.Code,
