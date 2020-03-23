@@ -32,7 +32,10 @@ namespace IDP
             {
                 new ApiResource("imagegalleryapi",
                     "Image Gallery API",
-                    new List<string> {"role"}),
+                    new List<string> {"role"})
+                {
+                    ApiSecrets = new List<Secret>{ new Secret("apisecret".Sha256()) }
+                },
             };
 
         public static IEnumerable<Client> Clients =>
@@ -40,6 +43,7 @@ namespace IDP
             {
                 new Client
                 {
+                    AccessTokenType = AccessTokenType.Reference,
                     // IdentityTokenLifetime = by default 5 mins in [sec]
                     //AuthorizationCodeLifetime = by default 5 mins in [sec]
                     AccessTokenLifetime =  120, //by default 1 h in [sec]

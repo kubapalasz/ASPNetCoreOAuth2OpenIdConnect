@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using IdentityModel;
 using IdentityServer4.AccessTokenValidation;
 using ImageGallery.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +50,7 @@ namespace ImageGallery.API
                 {
                     options.Authority = "https://localhost:44317/"; // IDP url
                     options.ApiName = "imagegalleryapi";
+                    options.ApiSecret = "apisecret".ToSha256();
                 });
 
             // register the DbContext on the container, getting the connection string from
