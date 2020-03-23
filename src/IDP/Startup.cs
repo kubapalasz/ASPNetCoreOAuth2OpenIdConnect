@@ -3,9 +3,14 @@
 
 
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -22,13 +27,15 @@ namespace IDP
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var idpDbConnectionString = "Server=(localdb)\\mssqllocaldb;Database=IDPDataDB;Trusted_Connection=True;";
+
             // uncomment, if you want to add an MVC-based UI
             services.AddControllersWithViews();
 
             var builder = services.AddIdentityServer()
-                .AddInMemoryIdentityResources(Config.Ids)
-                .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryClients(Config.Clients)
+                //.AddInMemoryIdentityResources(Config.Ids)
+                //.AddInMemoryApiResources(Config.Apis)
+                //.AddInMemoryClients(Config.Clients)
                 .AddTestUsers(TestUsers.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
@@ -48,6 +55,20 @@ namespace IDP
 
             // Verify https://localhost:44317/.well-known/openid-configuration/jwks
             // "kid": "84E0E23405FF068047623BDA4BB3DA1B4BE0664B",
+
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+
+            builder.AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = b => b.UseSqlServer(idpDbConnectionString, sqlOptions =>
+                    {
+                        sqlOptions.MigrationsAssembly(migrationsAssembly);
+                    });
+            });
+
+
+            // PackageManager > Add-Migration -name InitialIdentityServerConfigurationDBMigration -context ConfigurationDBContext
+            // Error > Your startup project 'IDP' doesn't reference Microsoft.EntityFrameworkCore.Design.
         }
 
         public void Configure(IApplicationBuilder app)
@@ -56,6 +77,8 @@ namespace IDP
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            InitializeDatabae(app);
 
             // uncomment if you want to add MVC
             app.UseStaticFiles();
@@ -86,6 +109,42 @@ namespace IDP
                 }
 
                 return certCollection[0];
+            }
+        }
+
+        private void InitializeDatabae(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Config.Clients)
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.IdentityResources.Any())
+                {
+                    foreach (var id in Config.Ids)
+                    {
+                        context.IdentityResources.Add(id.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var api in Config.Apis)
+                    {
+                        context.ApiResources.Add(api.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
             }
         }
     }
