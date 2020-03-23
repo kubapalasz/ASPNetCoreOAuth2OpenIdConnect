@@ -210,8 +210,43 @@ namespace ImageGallery.Client.Controllers
 
         public async Task Logout()
         {
+            var idpClient = _httpClientFactory.CreateClient("IDPClient");
+            var discoveryDocument = await idpClient.GetDiscoveryDocumentAsync();
+
+            if (discoveryDocument.IsError)
+            {
+                throw new Exception("Failed to get Discovery document  for revoking token access");
+            }
+
+            var accessTokenRevokeResponse = await idpClient.RevokeTokenAsync(new TokenRevocationRequest
+            {
+                Address = discoveryDocument.RevocationEndpoint,
+                ClientId = "imagegalleryclient",
+                ClientSecret = "secret",
+                Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken)
+            });
+
+            if (accessTokenRevokeResponse.IsError)
+            {
+                throw new Exception("Failed to get Discovery document  for revoking token access");
+            }
+
+            var refreshTokenRevokeResponse = await idpClient.RevokeTokenAsync(new TokenRevocationRequest
+            {
+                Address = discoveryDocument.RevocationEndpoint,
+                ClientId = "imagegalleryclient",
+                ClientSecret = "secret",
+                Token = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.RefreshToken)
+            });
+
+            if (refreshTokenRevokeResponse.IsError)
+            {
+                throw new Exception("Failed to get Discovery document  for revoking token access");
+            }
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+
         }
 
         [Authorize(Policy = "CanOrderFrame")]
