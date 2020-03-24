@@ -12,6 +12,7 @@ using ImageGallery.Client.HttpHandlers;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ImageGallery.Client
@@ -36,6 +37,8 @@ namespace ImageGallery.Client
 
             services.AddAuthorization(authorizationOptions =>
             {
+                IdentityModelEventSource.ShowPII = true;
+
                 authorizationOptions.AddPolicy
                 (
                     "CanOrderFrame",

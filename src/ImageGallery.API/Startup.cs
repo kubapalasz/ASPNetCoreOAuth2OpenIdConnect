@@ -14,6 +14,7 @@ using IdentityModel;
 using IdentityServer4.AccessTokenValidation;
 using ImageGallery.API.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Logging;
 
 namespace ImageGallery.API
 {
@@ -29,6 +30,8 @@ namespace ImageGallery.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             services.AddControllers()
                      .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
 
