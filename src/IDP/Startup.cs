@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace IDP
 {
@@ -28,6 +29,8 @@ namespace IDP
         public void ConfigureServices(IServiceCollection services)
         {
             var idpDbConnectionString = "Server=(localdb)\\mssqllocaldb;Database=IDPDataDB;Trusted_Connection=True;";
+
+            IdentityModelEventSource.ShowPII = true;
 
             // uncomment, if you want to add an MVC-based UI
             services.AddControllersWithViews();
@@ -60,10 +63,9 @@ namespace IDP
 
             builder.AddConfigurationStore(options =>
             {
-                options.ConfigureDbContext = b => b.UseSqlServer(idpDbConnectionString, sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(migrationsAssembly);
-                    });
+                options.ConfigureDbContext =
+                    builder => builder.UseSqlServer(idpDbConnectionString,
+                        options => { options.MigrationsAssembly(migrationsAssembly); });
             });
 
 
