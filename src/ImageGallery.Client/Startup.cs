@@ -39,6 +39,8 @@ namespace ImageGallery.Client
 
             services.AddAuthorization(authorizationOptions =>
             {
+                IdentityModelEventSource.ShowPII = true;
+
                 authorizationOptions.AddPolicy
                 (
                     "CanOrderFrame",
