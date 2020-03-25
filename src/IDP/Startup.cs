@@ -68,8 +68,15 @@ namespace IDP
             builder.AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext =
-                    builder => builder.UseSqlServer(idpDbConnectionString,
-                        options => { options.MigrationsAssembly(migrationsAssembly); });
+                    innerBuilder => innerBuilder.UseSqlServer(idpDbConnectionString,
+                        innerOptions => { innerOptions.MigrationsAssembly(migrationsAssembly); });
+            });
+
+            builder.AddOperationalStore(options =>
+            {
+                options.ConfigureDbContext =
+                    innerBuilder => innerBuilder.UseSqlServer(idpDbConnectionString,
+                        innerOptions => { innerOptions.MigrationsAssembly(migrationsAssembly); });
             });
 
 
